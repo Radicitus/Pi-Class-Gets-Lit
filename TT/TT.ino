@@ -19,6 +19,8 @@ bool firstSetup = true;
 unsigned long previousMillis = 0;        
 const long interval = 1000;          
 
+
+// Function headers
 void rainbowStart();
 void pressurePad1(int &score1);
 void pressurePad2(int &score2);
@@ -132,7 +134,7 @@ void loop(void)
   //LEDbrightness = map(fsrReading1, 0, 1023, 0, 255);
 
 
-
+// Display a rainbow array with a wave animation
 void rainbowStart()
 {
   //Red
@@ -194,6 +196,7 @@ void rainbowStart()
   startFlag = true;
 }
 
+// Pressure Pad 1 (green): execute body if there is a reading
 void pressurePad1(int &score1)
 {
   if (fsrReading1 > 100 && score1 < 30) 
@@ -218,6 +221,7 @@ void pressurePad1(int &score1)
   }
 }
 
+// Pressure Pad 2 (red): execute body if there is a reading
 void pressurePad2(int &score2)
 {
   if (fsrReading2 > 100 && score2 < 30) 
@@ -242,6 +246,7 @@ void pressurePad2(int &score2)
   }
 }
 
+// Display both scores in LED on short sides
 void showScores() {
   int base1 = 150;
   int base2 = 63;
@@ -256,6 +261,7 @@ void showScores() {
   
 }
 
+// Meteor rain LED effect around perimeter
 void meteorRain(byte red, byte green, byte blue, byte meteorSize, byte meteorTrailDecay, boolean meteorRandomDecay, int SpeedDelay) {    
   for(int i = 0; i < NUM_LEDS; i++) {
     
@@ -278,6 +284,8 @@ void meteorRain(byte red, byte green, byte blue, byte meteorSize, byte meteorTra
     //delay(SpeedDelay);
   }
 }
+
+// Meteor rain effect along the first long side of the foosball table
 void meteorRainlong1(byte red, byte green, byte blue, byte meteorSize, byte meteorTrailDecay, boolean meteorRandomDecay, int SpeedDelay) {    
   for(int i = 0; i < 63; i++) {
     
@@ -300,6 +308,8 @@ void meteorRainlong1(byte red, byte green, byte blue, byte meteorSize, byte mete
     //delay(SpeedDelay);
   }
 }
+
+// Meteor rain effect along the second long side of the foosball table
 void meteorRainlong2(byte red, byte green, byte blue, byte meteorSize, byte meteorTrailDecay, boolean meteorRandomDecay, int SpeedDelay) {    
   for(int i = 98; i < 151; i++) {
     
@@ -322,6 +332,8 @@ void meteorRainlong2(byte red, byte green, byte blue, byte meteorSize, byte mete
     //delay(SpeedDelay);
   }
 }
+
+
 void fadeToBlack(int ledNo, byte fadeValue) {
  #ifdef ADAFRUIT_NEOPIXEL_H 
     // NeoPixel
@@ -358,27 +370,8 @@ void setPixel(int Pixel, byte red, byte green, byte blue) {
    leds[Pixel].b = blue;
  #endif
 };
-//
-//void fadeInOut(byte red, byte green, byte blue)
-//{
-//  float r, g, b;
-//      
-//  for(int k = 0; k < 256; k=k+1) { 
-//    r = (k/256.0)*red;
-//    g = (k/256.0)*green;
-//    b = (k/256.0)*blue;
-//    FastLED.show();
-//  }
-//     
-//  for(int k = 255; k >= 0; k=k-2) 
-//  {
-//    r = (k/256.0)*red;
-//    g = (k/256.0)*green;
-//    b = (k/256.0)*blue;
-//    FastLED.show();
-//  }
-//}
 
+// Color fades in and out along whole perimeter
 void fadeInOut(byte red, byte green, byte blue)
 {
   float r, g, b;
@@ -418,6 +411,7 @@ void fadeInOut(byte red, byte green, byte blue)
   }
 }
 
+// Color fades in and out along first long side
 void fadeInOutlong1(byte red, byte green, byte blue)
 {
   float r, g, b;
@@ -444,6 +438,7 @@ void fadeInOutlong1(byte red, byte green, byte blue)
   }
 }
 
+// Color fades in and out along second long side
 void fadeInOutlong2(byte red, byte green, byte blue)
 {
   float r, g, b;
@@ -470,6 +465,7 @@ void fadeInOutlong2(byte red, byte green, byte blue)
   }
 }
 
+// Color blinks twice along whole perimter
 void Blink(byte red, byte green, byte blue)
 {
   float r, g, b;
@@ -495,6 +491,7 @@ void Blink(byte red, byte green, byte blue)
   }
 }
 
+// Fills strip with same color one by one
 void colorWipe(byte red, byte green, byte blue, int SpeedDelay) 
 {
   for(uint16_t i=0; i<NUM_LEDS; i++)
