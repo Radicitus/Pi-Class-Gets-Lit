@@ -16,15 +16,13 @@ bool startFlag = false;
 bool isDefault = true;
 bool firstSetup = true;
 
-
-unsigned long previousMillis = 0;
-const long interval = 1000;
-
-
 // Function headers
+void printReadings();
+void endGame();
+void restartGame();
+void score();
+void showScores();
 void rainbowStart();
-//void pressurePad1(int &score1);
-//void pressurePad2(int &score2);
 void meteorRain(byte red, byte green, byte blue, byte meteorSize, byte meteorTrailDecay, boolean meteorRandomDecay, int SpeedDelay);
 void meteorRainLong(byte red, byte green, byte blue, byte meteorSize, byte meteorTrailDecay, boolean meteorRandomDecay, int SpeedDelay);
 void fadeToBlack(int ledNo, byte fadeValue);
@@ -34,13 +32,14 @@ void fadeInOutlong1(byte red, byte green, byte blue);
 void fadeInOutlong2(byte red, byte green, byte blue);
 void Blink(byte red, byte green, byte blue);
 void colorWipe(byte red, byte green, byte blue, int SpeedDelay);
+void strobe(byte red, byte green, byte blue, int strobeCount, int flashDelay, int endPause);
 
 void setup(void)
 {
   Serial.begin(9600);
   FastLED.addLeds<WS2812, LED_PIN, GRB>(leds, NUM_LEDS);
   FastLED.setBrightness(BRIGHTNESS);
-  //rainbowStart();
+  rainbowStart();
 }
 
 void loop(void)
@@ -66,7 +65,6 @@ void loop(void)
 
     isDefault = false;
   }
-
   else if (score1 <= 27 || score2 <= 27 )
   {
     if (isDefault == false || firstSetup == true)
@@ -94,20 +92,13 @@ void loop(void)
   //game end
   if (score1 == 30 || score2 == 30)
   {
-    if (score2 == 30)
-    {
-      strobe(0xFF, 0x00, 0x00, 13, 100, 1000);
-    }
-    else if (score1 == 30)
-    {
-      strobe(0x00, 0xFF, 0x00, 13, 100, 1000);
-    }
-    
+    endGame();
     isDefault = false;
     restartGame();
   }
 }
-// Print the voltage readings from the FSRs and the scores
+
+// Print the analog voltage readings from the FSRs and the scores
 void printReadings()
 {
   Serial.print("\nAnalog1 reading = ");
@@ -121,12 +112,53 @@ void printReadings()
   Serial.println(score2);
 }
 
+// Effects for the end of a game
+void endGame() {
+  if (score1 == 30)
+  {
+    strobe(0x00, 0xFF, 0x00, 13, 100, 1000);
+  }
+  else if (score2 == 30)
+  {
+    strobe(0xFF, 0x00, 0x00, 13, 100, 1000);
+  }
+}
+
+// Restart values and display rainbow effect
 void restartGame() {
   score1 = 0;
   score2 = 0;
 
   firstSetup = true;
   rainbowStart();
+}
+
+void score(int &score, byte red, byte green, byte blue)
+{
+  score += 3;
+
+  Blink(red, green, blue);
+  showScores();
+
+  ledState = HIGH;
+  isDefault = false;
+
+  FastLED.show();
+}
+
+// Display both scores in LED on short sides
+void showScores() {
+  int base1 = 150;
+  int base2 = 63;
+
+  for (int i = 3; i <= score1; i += 3) {
+    leds[base1 + i] = CRGB(0, 255, 0);
+  }
+
+  for (int i = 3; i <= score2; i += 3) {
+    leds[base2 + i] = CRGB(255, 0, 0);
+  }
+
 }
 
 // Display a rainbow array with a wave animation
@@ -189,34 +221,6 @@ void rainbowStart()
   }
 
   startFlag = true;
-}
-
-void score(int &score, byte red, byte green, byte blue)
-{
-  score += 3;
-
-  Blink(red, green, blue);
-  showScores();
-
-  ledState = HIGH;
-  isDefault = false;
-
-  FastLED.show();
-}
-
-// Display both scores in LED on short sides
-void showScores() {
-  int base1 = 150;
-  int base2 = 63;
-
-  for (int i = 3; i <= score1; i += 3) {
-    leds[base1 + i] = CRGB(0, 255, 0);
-  }
-
-  for (int i = 3; i <= score2; i += 3) {
-    leds[base2 + i] = CRGB(255, 0, 0);
-  }
-
 }
 
 // Meteor rain LED effect around perimeter
@@ -460,6 +464,7 @@ void colorWipe(byte red, byte green, byte blue, int SpeedDelay)
   }
 }
 
+// Strobe light effect with a single color
 void strobe(byte red, byte green, byte blue, int strobeCount, int flashDelay, int endPause)
 {
   for (int j = 0; j < strobeCount; j++)
@@ -467,7 +472,7 @@ void strobe(byte red, byte green, byte blue, int strobeCount, int flashDelay, in
     fill_solid(leds, NUM_LEDS, CRGB(red, green, blue));
     FastLED.show();
     delay(flashDelay);
-    fill_solid(leds, NUM_LEDS, CRGB(0,0,0));
+    fill_solid(leds, NUM_LEDS, CRGB(0, 0, 0));
     FastLED.show();
     delay(flashDelay);
   }
