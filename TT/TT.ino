@@ -1,6 +1,6 @@
 #include <FastLED.h>
 #define LED_PIN     5
-#define NUM_LEDS    300
+#define NUM_LEDS    194
 #define BRIGHTNESS  15
 #define SCORE_THRESHOLD 30
 
@@ -71,13 +71,13 @@ void loop(void)
     {
       isDefault = true;
       firstSetup = false;
-      for (int i = 0; i < 63; i += 2)
+      for (int i = 0; i < 61; i += 2)
       {
         setPixel(i, 0xEF, 0x1A, 0x4D);
         setPixel(i + 1, 0x77, 0x77, 0x77);
       }
       FastLED.show();
-      for (int i = 98; i < 151; i += 2) {
+      for (int i = 96; i < 158; i += 2) {
         setPixel(i, 0xEF, 0x1A, 0x4D);
         setPixel(i + 1, 0x77, 0x77, 0x77);
 
@@ -148,8 +148,8 @@ void score(int &score, byte red, byte green, byte blue)
 
 // Display both scores in LED on short sides
 void showScores() {
-  int base1 = 150;
-  int base2 = 63;
+  int base1 = 159;
+  int base2 = 62;
 
   for (int i = 3; i <= score1; i += 3) {
     leds[base1 + i] = CRGB(0, 255, 0);
@@ -165,56 +165,56 @@ void showScores() {
 void rainbowStart()
 {
   //Red
-  for (int i = 0; i < 48; i++)
+  for (int i = 0; i < 27; i++)
   {
     leds[i] = CRGB(255, 0, 0);
     FastLED.show();
   }
 
   //Orange
-  for (int i = 48; i < 90; i++)
+  for (int i = 27; i < 55; i++)
   {
     leds[i] = CRGB(255, 127, 0);
     FastLED.show();
   }
 
   //Yellow
-  for (int i = 90; i < 132; i++)
+  for (int i = 55; i < 82; i++)
   {
     leds[i] = CRGB(255, 255, 0);
     FastLED.show();
   }
 
   //Green
-  for (int i = 132; i < 174; i++)
+  for (int i = 82; i < 110; i++)
   {
     leds[i] = CRGB(0, 255, 0);
     FastLED.show();
   }
 
   //Blue
-  for (int i = 174; i < 216; i++)
+  for (int i = 110; i < 137; i++)
   {
     leds[i] = CRGB(0, 0, 255);
     FastLED.show();
   }
 
   //Indigo
-  for (int i = 216; i < 258; i++)
+  for (int i = 137; i < 165; i++)
   {
     leds[i] = CRGB(75, 0, 130);
     FastLED.show();
   }
 
   //Violet
-  for (int i = 258; i < 300; i++)
+  for (int i = 165; i < 194; i++)
   {
     leds[i] = CRGB(148, 0, 211);
     FastLED.show();
   }
 
   //Turn it off backwards
-  for (int i = 299; i >= 0; i--)
+  for (int i = 193; i >= 0; i--)
   {
     leds[i] = CRGB(0, 0, 0);
     FastLED.show();
@@ -223,6 +223,7 @@ void rainbowStart()
   startFlag = true;
 }
 
+// Not used
 // Meteor rain LED effect around perimeter
 void meteorRain(byte red, byte green, byte blue, byte meteorSize, byte meteorTrailDecay, boolean meteorRandomDecay, int SpeedDelay) {
   for (int i = 0; i < NUM_LEDS; i++) {
@@ -247,6 +248,7 @@ void meteorRain(byte red, byte green, byte blue, byte meteorSize, byte meteorTra
   }
 }
 
+// Not used
 // Meteor rain effect along the first long side of the foosball table
 void meteorRainlong1(byte red, byte green, byte blue, byte meteorSize, byte meteorTrailDecay, boolean meteorRandomDecay, int SpeedDelay) {
   for (int i = 0; i < 63; i++) {
@@ -271,6 +273,7 @@ void meteorRainlong1(byte red, byte green, byte blue, byte meteorSize, byte mete
   }
 }
 
+// Not used
 // Meteor rain effect along the second long side of the foosball table
 void meteorRainlong2(byte red, byte green, byte blue, byte meteorSize, byte meteorTrailDecay, boolean meteorRandomDecay, int SpeedDelay) {
   for (int i = 98; i < 151; i++) {
@@ -295,7 +298,7 @@ void meteorRainlong2(byte red, byte green, byte blue, byte meteorSize, byte mete
   }
 }
 
-
+// Not used
 void fadeToBlack(int ledNo, byte fadeValue) {
 #ifdef ADAFRUIT_NEOPIXEL_H
   // NeoPixel
@@ -319,6 +322,7 @@ void fadeToBlack(int ledNo, byte fadeValue) {
   leds[ledNo].fadeToBlackBy( fadeValue );
 #endif
 }
+
 
 void setPixel(int Pixel, byte red, byte green, byte blue) {
 #ifdef ADAFRUIT_NEOPIXEL_H
@@ -453,6 +457,7 @@ void Blink(byte red, byte green, byte blue)
   }
 }
 
+// Not used
 // Fills strip with same color one by one
 void colorWipe(byte red, byte green, byte blue, int SpeedDelay)
 {
